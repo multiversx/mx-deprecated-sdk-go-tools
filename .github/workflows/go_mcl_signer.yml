@@ -72,5 +72,5 @@ jobs:
       with:
         upload_url: ${{ steps.get_release_info.outputs.upload_url }}
         asset_path: ./cmd/signer/signer
-        asset_name: mcl_signer_${{ matrix.runs-on }}
+        asset_name: mcl_signer_${{ github.ref }}_${{ matrix.runs-on }}
         asset_content_type: application/zip
