@@ -1,7 +1,12 @@
 name: Build MCL signer
 
 on:
-  workflow_dispatch
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Version'     
+        required: true
+        default: 'v1.0.0'
 
 jobs:
   release:
@@ -13,9 +18,9 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        tag_name: ${{ github.ref }}
-        release_name: Release MCL Signer ${{ github.ref }}
-        draft: true
+        tag_name: ${{ github.event.inputs.version }}
+        release_name: New MCL Signer
+        draft: false
         prerelease: true
     - name: Output Release URL File
       run: echo "${{ steps.create_release.outputs.upload_url }}" > release_url.txt
@@ -72,5 +77,5 @@ jobs:
       with:
         upload_url: ${{ steps.get_release_info.outputs.upload_url }}
         asset_path: ./cmd/signer/signer
-        asset_name: mcl_signer_${{ github.ref }}_${{ matrix.runs-on }}
+        asset_name: mcl_signer_${{ github.event.inputs.version }}_${{ matrix.runs-on }}
         asset_content_type: application/zip
