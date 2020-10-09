@@ -59,6 +59,7 @@ jobs:
       run: | 
         cd ./cmd/signer
         go build -v .
+        tar -zcvf signer.tar.gz ./signer
       
     - name: Load Release URL File from release job
       uses: actions/download-artifact@v1
@@ -76,6 +77,5 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         upload_url: ${{ steps.get_release_info.outputs.upload_url }}
-        asset_path: ./cmd/signer/signer
-        asset_name: mcl_signer_${{ github.event.inputs.version }}_${{ matrix.runs-on }}
-        asset_content_type: application/zip
+        asset_path: ./cmd/signer/signer.tar.gz
+        asset_name: mcl_signer_${{ github.event.inputs.version }}_${{ matrix.runs-on }}.tar.gz
