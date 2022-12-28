@@ -1,0 +1,60 @@
+name: Build MCL signer
+
+on:
+  workflow_dispatch:
+    inputs:
+      tag:
+        required: true
+        description: Existing release tag
+
+permissions:
+  contents: write
+
+jobs:      
+  build:
+    strategy:
+      matrix:
+        runs-on: [ubuntu-latest, macos-latest]
+    runs-on: ${{ matrix.runs-on }}
+    name: Build
+    steps:
+
+    - name: Set up Go
+      uses: actions/setup-go@v3
+      with:
+        go-version: 1.17.6
+      id: go
+
+    - name: Check out code into the Go module directory
+      uses: actions/checkout@v3
+      with:
+        fetch-depth: "0"
+
+    - name: Get dependencies
+      run: |
+        go get -v -t -d ./...
+        if [ -f Gopkg.toml ]; then
+            curl https://raw.githubusercontent.com/golang/dep/master/install.sh | sh
+            dep ensure
+        fi
+
+    - name: Build on Linux
+      if: matrix.os == 'ubuntu-latest'
+      run: | 
+        cd ./cmd/mcl
+        go build -buildmode=c-shared -o mcl.so main.go
+
+    - name: Build on MacOS
+      if: matrix.os == 'macos-latest'
+      run: | 
+        cd ./cmd/mcl
+        go build -buildmode=c-shared -o mcl.dylib main.go
+
+    - name: Save artifacts
+      uses: actions/upload-artifact@v2
+      with:
+        name: built-contracts
+        path: |
+          *.so
+          *.dylib
+        if-no-files-found: error
