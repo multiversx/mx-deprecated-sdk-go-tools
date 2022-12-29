@@ -55,6 +55,6 @@ jobs:
       with:
         name: built-contracts
         path: |
-          *.so
-          *.dylib
+          ./cmd/mcl/*.so
+          ./cmd/mcl/*.dylib
         if-no-files-found: error
