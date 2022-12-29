@@ -11,7 +11,7 @@ import (
 
 var (
 	keyGenerator = signing.NewKeyGenerator(mcl.NewSuiteBLS12())
-	singleSigner = singlesig.BlsSingleSigner{}
+	blsSigner    = singlesig.BlsSingleSigner{}
 )
 
 func doGeneratePrivateKey() string {
@@ -64,7 +64,7 @@ func doSignMessage(messageHex string, privateKeyHex string) string {
 		return ""
 	}
 
-	signature, err := singleSigner.Sign(privateKey, message)
+	signature, err := blsSigner.Sign(privateKey, message)
 	if err != nil {
 		log.Println("doSignMessage(): error when signing the message", err)
 		return ""
@@ -95,7 +95,7 @@ func doVerifyMessage(publicKeyHex string, messageHex string, signatureHex string
 		return false
 	}
 
-	err = singleSigner.Verify(publicKey, message, signature)
+	err = blsSigner.Verify(publicKey, message, signature)
 	return err == nil
 }
 
