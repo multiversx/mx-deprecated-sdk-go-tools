@@ -39,16 +39,16 @@ jobs:
         fi
 
     - name: Build on Linux
-      if: matrix.os == 'ubuntu-latest'
+      if: ${{ matrix.os == 'ubuntu-latest' }}
       run: | 
         cd ./cmd/mcl
-        go build -buildmode=c-shared -o mcl.so main.go
+        go build -buildmode=c-shared -o mcl.so
 
     - name: Build on MacOS
-      if: matrix.os == 'macos-latest'
+      if: ${{ matrix.os == 'macos-latest' }}
       run: | 
         cd ./cmd/mcl
-        go build -buildmode=c-shared -o mcl.dylib main.go
+        go build -buildmode=c-shared -o mcl.dylib
 
     - name: Save artifacts
       uses: actions/upload-artifact@v2
