@@ -55,6 +55,6 @@ jobs:
       with:
         name: libraries
         path: |
-          ${GITHUB_WORKSPACE}/mcl.so
-          ${GITHUB_WORKSPACE}/mcl.dylib
+          ${{ github.workspace }}/mcl.so
+          ${{ github.workspace }}/mcl.dylib
         if-no-files-found: error
