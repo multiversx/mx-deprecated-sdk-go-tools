@@ -42,19 +42,19 @@ jobs:
       if: runner.os == 'Linux'
       run: | 
         cd ./cmd/mcl
-        go build -buildmode=c-shared -o /home/runner/work/mcl.so
+        go build -buildmode=c-shared -o ${HOME}/runner/work/mcl.so
 
     - name: Build on MacOS
       if: runner.os == 'macOS'
       run: | 
         cd ./cmd/mcl
-        go build -buildmode=c-shared -o /home/runner/work/mcl.dylib
+        go build -buildmode=c-shared -o ${HOME}/runner/work/mcl.dylib
 
     - name: Save artifacts
       uses: actions/upload-artifact@v2
       with:
-        name: built-contracts
+        name: libraries
         path: |
-          /home/runner/work/*.so
-          /home/runner/work/*.dylib
+          ${HOME}/work/*.so
+          ${HOME}/runner/work/*.dylib
         if-no-files-found: error
