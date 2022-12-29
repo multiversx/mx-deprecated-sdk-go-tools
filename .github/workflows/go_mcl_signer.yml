@@ -3,9 +3,9 @@ name: Build MCL signer
 on:
   workflow_dispatch:
     inputs:
-      tag:
-        required: true
-        description: Existing release tag
+      attach-on-release:
+        type: boolean
+        description: Attach artifacts on release, if one exists
 
 permissions:
   contents: write
@@ -58,3 +58,24 @@ jobs:
           ${{ github.workspace }}/mcl.so
           ${{ github.workspace }}/mcl.dylib
         if-no-files-found: error
+
+  attach-on-release:
+    if: github.event.inputs.attach_on_release == true
+    needs: [build]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: "0"
+
+      - name: Download all workflow artifacts
+        uses: actions/download-artifact@v2
+        with:
+          path: libraries
+
+      - name: Upload artifacts
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh release upload ${{ github.ref_name }} $(find ./libraries -type f)
