@@ -39,13 +39,13 @@ jobs:
         fi
 
     - name: Build on Linux
-      if: ${{ matrix.os == 'ubuntu-latest' }}
+      if: runner.os == 'Linux'
       run: | 
         cd ./cmd/mcl
         go build -buildmode=c-shared -o /home/runner/work/mcl.so
 
     - name: Build on MacOS
-      if: ${{ matrix.os == 'macos-latest' }}
+      if: runner.os == 'macOS'
       run: | 
         cd ./cmd/mcl
         go build -buildmode=c-shared -o /home/runner/work/mcl.dylib
