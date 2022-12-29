@@ -60,7 +60,7 @@ jobs:
         if-no-files-found: error
 
   attach-on-release:
-    if: github.event.inputs.attach_on_release == true
+    if: ${{ github.event.inputs.attach_on_release == 'true' }}
     needs: [build]
     runs-on: ubuntu-latest
     steps:
