@@ -68,9 +68,9 @@ typedef struct { void *data; GoInt len; GoInt cap; } GoSlice;
 extern "C" {
 #endif
 
-extern char* generatePublicKey(char* seed);
-extern char* signMessage(char* messageToSign, char* seed);
-extern GoInt verifyMessage(char* publicKey, char* messageToVerify, char* signature);
+extern char* generatePublicKey(char* privateKey);
+extern char* signMessage(char* message, char* privateKey);
+extern GoInt verifyMessage(char* publicKey, char* message, char* signature);
 extern char* generatePrivateKey();
 
 #ifdef __cplusplus

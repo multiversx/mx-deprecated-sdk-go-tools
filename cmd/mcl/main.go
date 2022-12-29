@@ -8,26 +8,26 @@ func main() {
 }
 
 //export generatePublicKey
-func generatePublicKey(seed *C.char) *C.char {
-	seedString := C.GoString(seed)
-	publicKey := doGeneratePublicKey(seedString)
-	return C.CString(publicKey)
+func generatePublicKey(privateKey *C.char) *C.char {
+	privateKeyHex := C.GoString(privateKey)
+	publicKeyHex := doGeneratePublicKey(privateKeyHex)
+	return C.CString(publicKeyHex)
 }
 
 //export signMessage
-func signMessage(messageToSign *C.char, seed *C.char) *C.char {
-	messageToSignString := C.GoString(messageToSign)
-	seedString := C.GoString(seed)
-	signature := doSignMessage(messageToSignString, seedString)
-	return C.CString(signature)
+func signMessage(message *C.char, privateKey *C.char) *C.char {
+	messageHex := C.GoString(message)
+	privateKeyHex := C.GoString(privateKey)
+	signatureHex := doSignMessage(messageHex, privateKeyHex)
+	return C.CString(signatureHex)
 }
 
 //export verifyMessage
-func verifyMessage(publicKey *C.char, messageToVerify *C.char, signature *C.char) int {
-	publicKeyString := C.GoString(publicKey)
-	messageToVerifyString := C.GoString(messageToVerify)
-	signatureString := C.GoString(signature)
-	ok := doVerifyMessage(publicKeyString, messageToVerifyString, signatureString)
+func verifyMessage(publicKey *C.char, message *C.char, signature *C.char) int {
+	publicKeyHex := C.GoString(publicKey)
+	messageHex := C.GoString(message)
+	signatureHex := C.GoString(signature)
+	ok := doVerifyMessage(publicKeyHex, messageHex, signatureHex)
 	if ok {
 		return 1
 	}
@@ -37,6 +37,6 @@ func verifyMessage(publicKey *C.char, messageToVerify *C.char, signature *C.char
 
 //export generatePrivateKey
 func generatePrivateKey() *C.char {
-	privateKey := doGeneratePrivateKey()
-	return C.CString(privateKey)
+	privateKeyHex := doGeneratePrivateKey()
+	return C.CString(privateKeyHex)
 }
