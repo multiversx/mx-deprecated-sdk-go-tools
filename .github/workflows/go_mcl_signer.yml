@@ -42,19 +42,19 @@ jobs:
       if: ${{ matrix.os == 'ubuntu-latest' }}
       run: | 
         cd ./cmd/mcl
-        go build -buildmode=c-shared -o mcl.so
+        go build -buildmode=c-shared -o /home/runner/work/mcl.so
 
     - name: Build on MacOS
       if: ${{ matrix.os == 'macos-latest' }}
       run: | 
         cd ./cmd/mcl
-        go build -buildmode=c-shared -o mcl.dylib
+        go build -buildmode=c-shared -o /home/runner/work/mcl.dylib
 
     - name: Save artifacts
       uses: actions/upload-artifact@v2
       with:
         name: built-contracts
         path: |
-          ./cmd/mcl/*.so
-          ./cmd/mcl/*.dylib
+          /home/runner/work/*.so
+          /home/runner/work/*.dylib
         if-no-files-found: error
